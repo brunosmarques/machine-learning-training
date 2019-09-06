@@ -34,7 +34,7 @@ print(y)
 x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 svr_linear = SVR(kernel='linear', C=1e3)
-svr_poly = SVR(kernel='poly', C=1e3, degree=2)
+svr_poly = SVR(kernel='poly', C=1e3, degree=7)
 svr_rfb = SVR(kernel='rbf', C=1e3, gamma=0.1)
 
 svr_linear.fit(x_train, y_train)
