@@ -9,11 +9,14 @@ import numpy as np
 
 # SKLearn
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 from sklearn.svm import LinearSVC
 from sklearn.metrics import accuracy_score
+from sklearn.dummy import DummyClassifier
 
 # Get data from web (used car sales)
 uri = 'https://gist.githubusercontent.com/guilhermesilveira/4d1d4a16ccbf6ea4e0a64a38a24ec884/raw/afd05cb0c796d18f3f5a6537053ded308ba94bf7/car-prices.csv'
+uri = 'car_prices.csv' # local file if you don't have internet access
 data = pd.read_csv(uri)
 
 # Filter and normalize data
@@ -35,10 +38,19 @@ y = data['sold']
 SEED = 5
 np.random.seed(SEED)
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, stratify = y)
+raw_x_train, raw_x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, stratify = y)
+scaler = StandardScaler()
+scaler.fit(raw_x_train)
+x_train = scaler.transform(raw_x_train)
+x_test = scaler.transform(raw_x_test)
 model = LinearSVC()
 model.fit(x_train, y_train)
-predictions = model.predict(x_test)
 
-accuracy = accuracy_score(y_test, predictions) * 100
-print("The accuracy is {0:.2f}%".format(accuracy))
+# predictions = model.predict(x_test)
+accuracy = model.score(x_test, y_test) * 100
+print("The model accuracy is {0:.2f}%".format(accuracy))
+
+dummy = DummyClassifier()
+dummy.fit(x_train, y_train)
+accuracy = dummy.score(x_test, y_test) * 100
+print("The dummy accuracy is {0:.2f}%".format(accuracy))
