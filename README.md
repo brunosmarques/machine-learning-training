@@ -7,3 +7,4 @@ I've decided to organize everything in one place, as it could help others to eng
 2. Stock prediction using machine learning regression
 3. Very simple classifier
 4. Very simple classifier 2 (a little bit better)
+5. Car sell classifier
