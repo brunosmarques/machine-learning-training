@@ -1,6 +1,0 @@
-High
-Low
-Open
-Close
-Volume
-Adj Close

@@ -14,7 +14,7 @@ start = datetime.datetime(2015, 1, 1)
 end = datetime.date.today()
 
 # prices = web.DataReader("GOOG", 'yahoo', start, end)
-prices = quandl.get("WIKI/AMZN")
+prices = quandl.get("WIKI/AMZN", start_date='2018-01-01', end_date='2019-01-01')
 prices = prices[['Adj. Close']]
 print(prices.head())
 
@@ -41,8 +41,8 @@ svr_linear.fit(x_train, y_train)
 svr_poly.fit(x_train, y_train)
 svr_rfb.fit(x_train, y_train)
 
-# svm_confidence = svr_rfb.score(x_test, y_test)
-# print("svm confidence: ", svm_confidence)
+linear_confidence = svr_linear.score(x_test, y_test)
+print("svm confidence: ", linear_confidence)
 
 x_forecast = np.array(prices.drop(['Prediction'],1))[-forecast_out:]
 print(x_forecast)
@@ -50,7 +50,6 @@ print(x_forecast)
 lin_prediction = svr_linear.predict(x_forecast)
 pol_prediction = svr_poly.predict(x_forecast)
 rfb_prediction = svr_rfb.predict(x_forecast)
-# print(svm_prediction)
 
 mpl.rc('figure', figsize=(8,7))
 mpl.__version__
@@ -60,17 +59,10 @@ plt.xlabel='Data'
 plt.ylabel='Price'
 plt.title='Support vector regression'
 
-print('Prices: ', len(prices))
-print('Index: ', len(prices.index))
-
-# plt.scatter(prices, prices, color='black', label='Data')
-# plt.plot(svr_lin.predict(dates3), color='red', label='Linear Model')
-# plt.plot(svr_pol.predict(dates3), color='green', label='Poly Model')
 plt.plot(lin_prediction, color='red', label='Linear Model')
-plt.plot(prices, pol_prediction, color='green', label='Poly Model')
+plt.plot(pol_prediction, color='green', label='Poly Model')
 plt.plot(rfb_prediction, color='blue', label='RFB Model')
-# svm_prediction.plot(label='GOOG Pred')
-# mavg.plot(label='mavg')
+
 plt.legend()
 plt.show()
 
